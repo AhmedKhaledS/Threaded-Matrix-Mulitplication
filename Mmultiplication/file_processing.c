@@ -1,6 +1,7 @@
 #include <unistd.h>
 #include "file_processing.h"
 
+int **mat1, **mat2;
 
 struct m_data *read_matrices(char *m1_file_name, char *m2_file_name)
 {
@@ -31,8 +32,25 @@ struct m_data *read_matrices(char *m1_file_name, char *m2_file_name)
     unsigned c1 = get_numeric_value(c_value);
     unsigned r2 = get_numeric_value(r2_value);
     unsigned c2 = get_numeric_value(c2_value);
-    printf("%d %d %d %d\n", r1, c1, r2, c2);
     struct m_data *datum = create_mdata(r1, c1, r2, c2);
+    for (int i = 0; i < r1; i++)
+    {
+        for (int j = 0; j < c1; j++)
+        {
+            datum->matrix_a[i][j] = mat1[i][j];
+        }
+        free(mat1[i]);
+    }
+    free(mat1);
+    for (int i = 0; i < r2; i++)
+    {
+        for (int j = 0; j < c2; j++)
+        {
+            datum->matrix_b[i][j] = mat2[i][j];
+        }
+        free(mat2[i]);
+    }
+    free(mat2);
     return datum;
 }
 
@@ -57,7 +75,7 @@ void read_mat1_size(FILE *input_a, char r_value[], char c_value[])
             }
         }
         r_value[count1] = '\0';
-        printf("%s\n", r_value);
+        //printf("%s\n", r_value);
         found = false;
         for (int j = i+1; j < strlen(buffer); j++)
         {
@@ -71,8 +89,20 @@ void read_mat1_size(FILE *input_a, char r_value[], char c_value[])
             }
         }
         c_value[count2] = '\0';
-        printf("%s\n", c_value);
+       // printf("%s\n", c_value);
     }
+
+    mat1 = (int **)malloc(sizeof(int*) * (size_t)get_numeric_value(r_value));
+    for (int i = 0; i < get_numeric_value(r_value); i++)
+        mat1[i] = (int*)malloc(sizeof(int) * (size_t)get_numeric_value(c_value));
+    for (int i = 0; i < get_numeric_value(r_value); i++)
+    {
+        for (int j = 0; j < get_numeric_value(c_value); j++)
+        {
+            fscanf(input_a, "%d", &mat1[i][j]);
+        }
+    }
+
     fclose(input_a);
 }
 
@@ -96,7 +126,7 @@ void read_mat2_size(FILE *input_b, char r2_value[], char c2_value[])
             }
         }
         r2_value[count1] = '\0';
-        printf("%s\n", r2_value);
+        //printf("%s\n", r2_value);
         found = false;
         for (int j = i+1; j < strlen(buffer); j++)
         {
@@ -110,7 +140,17 @@ void read_mat2_size(FILE *input_b, char r2_value[], char c2_value[])
             }
         }
         c2_value[count2] = '\0';
-        printf("%s\n", c2_value);
+        //printf("%s\n", c2_value);
+    }
+    mat2 = (int **)malloc(sizeof(int*) * (size_t)get_numeric_value(r2_value));
+    for (int i = 0; i < get_numeric_value(r2_value); i++)
+        mat2[i] = (int*)malloc(sizeof(int) * (size_t)get_numeric_value(c2_value));
+    for (int i = 0; i < get_numeric_value(r2_value); i++)
+    {
+        for (int j = 0; j < get_numeric_value(c2_value); j++)
+        {
+            fscanf(input_b, "%d", &mat2[i][j]);
+        }
     }
     fclose(input_b);
 }
