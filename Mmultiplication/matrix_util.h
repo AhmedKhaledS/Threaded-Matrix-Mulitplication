@@ -8,5 +8,6 @@
 struct m_data* create_mdata(unsigned int row1, unsigned int col1,
             unsigned int row2, unsigned int col2);
 struct state* create_state(unsigned int row, unsigned int col);
+int get_numeric_value(char *str);
 
 #endif // MATRIX_UTIL_H_INCLUDED

@@ -14,8 +14,6 @@ int main(int argc, char* argv[])
     // So they are in a.txt b.txt by default.
     if (argc == 1)
     {
-        char buff[200];
-        getlogin_r(buff, sizeof(buff));
         //puts(buff);
         struct m_data* r = read_matrices("a.txt", "b.txt");
         //struct m_data *x = create_mdata(3, 3, 3, 3);

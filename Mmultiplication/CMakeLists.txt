@@ -8,5 +8,4 @@ set(SOURCE_FILES
     main.c
     matrix_util.c
     multiply.c)
-
 add_executable(Mmultiplication ${SOURCE_FILES})

@@ -1,5 +1,6 @@
 #ifndef MATRICES_DATA_H_INCLUDED
 #define MATRICES_DATA_H_INCLUDED
+#include <string.h>
 
 struct state
 {

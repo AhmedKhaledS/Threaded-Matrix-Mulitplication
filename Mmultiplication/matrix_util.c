@@ -29,3 +29,13 @@ struct state* create_state(unsigned int row, unsigned int col)
     return st;
 }
 
+int get_numeric_value(char *str)
+{
+    int dec = 0, i, j, len;
+    len = strlen(str);
+    for(i=0; i<len; i++){
+        dec = dec * 10 + ( str[i] - '0' );
+    }
+    return dec;
+}
+

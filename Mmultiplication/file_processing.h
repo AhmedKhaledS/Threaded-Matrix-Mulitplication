@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdbool.h>
 #include "matrix_util.h"
 
 struct m_data *read_matrices(char *m1_file_name, char *m2_file_name);
