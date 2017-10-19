@@ -22,7 +22,7 @@ int main(int argc, char* argv[])
         multiply_element_threaded(x);*/
         /*for (int i = 0; i < 3; i++)
         {
-            for (int j = 0; j < 3; j++)
+            for (int j = 0; j <  3; j++)
                 printf("%d ", *(*(x->matrix_o+i)+j));
             printf("\n");
         }*/
