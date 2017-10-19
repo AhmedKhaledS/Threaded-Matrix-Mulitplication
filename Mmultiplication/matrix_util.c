@@ -22,3 +22,10 @@ struct m_data* create_mdata(unsigned int row1, unsigned int col1,
     return matrix_data;
 }
 
+struct state* create_state(unsigned int row, unsigned int col)
+{
+    struct state *st = (struct state *)malloc(sizeof(struct state));
+    st->curr_row = row, st->curr_col = col;
+    return st;
+}
+
