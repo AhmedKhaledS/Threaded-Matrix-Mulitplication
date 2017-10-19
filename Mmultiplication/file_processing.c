@@ -7,8 +7,6 @@ struct m_data *read_matrices(char *m1_file_name, char *m2_file_name)
 {
     FILE *input_a, *input_b;
     char dir[255];
-    getcwd(dir, sizeof(dir));
-    puts(dir);
     //input_b = fopen(m2_file_name, "r");
     input_a = fopen(m1_file_name, "r");
     if (input_a == NULL)

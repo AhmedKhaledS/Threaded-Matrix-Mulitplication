@@ -9,6 +9,7 @@ void multiply_naive(struct m_data *data)
     {
         for (int j = 0; j < data->bcol_size; j++)
         {
+            data->matrix_o[i][j] = 0;
             for (int k = 0; k < data->acol_size; k++)
             {
                 data->matrix_o[i][j] += (data->matrix_a[i][k]
@@ -79,6 +80,7 @@ void *calculate_row(void *ptr)
 void *calculate_element(void *ptr)
 {
     struct state *st = (struct state *) ptr;
+    mat_data->matrix_o[st->curr_row][st->curr_col] = 0;
     for (int i = 0; i < mat_data->acol_size; i++)
     {
         mat_data->matrix_o[st->curr_row][st->curr_col] += (mat_data->matrix_a[st->curr_row][i]
