@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include "matrices_data.h"
 #include "file_processing.h"
 #include <sys/time.h>
@@ -14,10 +13,10 @@ int main(int argc, char* argv[])
 
 /*    FILE *x, *y;
     x = fopen("a.txt", "w");
-    fprintf(x, "row=1000 col=100\n");
-    for (int i = 0; i < 1000; i++)
+    fprintf(x, "row=160 col=10000\n");
+    for (int i = 0; i < 160; i++)
     {
-        for (int j = 0; j < 100; j++)
+        for (int j = 0; j < 10000; j++)
         {
             fprintf(x, "%d ", i+j);
         }
@@ -25,12 +24,12 @@ int main(int argc, char* argv[])
     }
     fclose(x);
     y = fopen("b.txt", "w");
-    fprintf(y, "row=100 col=100\n");
-    for (int i = 0; i < 100; i++)
+    fprintf(y, "row=10000 col=200\n");
+    for (int i = 0; i < 10000; i++)
     {
-        for (int j = 0; j < 100; j++)
+        for (int j = 0; j < 200; j++)
         {
-            fprintf(y, "%d ", i==j ? 1 : 0);
+            fprintf(y, "%d ", j+i);
         }
         fprintf(y, "\n");
     }
@@ -40,6 +39,24 @@ int main(int argc, char* argv[])
     if (argc == 1)
     {
         struct m_data* data = read_matrices("a.txt", "b.txt");
+        gettimeofday(&start, NULL);
+        multiply_naive(data);
+        end_time(data, 1, "whole matrix");
+
+        //---------------------------------------------------------
+        gettimeofday(&start, NULL);
+        multiply_row_threaded(data);
+        gettimeofday(&stop, NULL);
+        end_time(data, data->arow_size, "each row");
+        //--------------------------------------------------------------------------------------------------
+        gettimeofday(&start, NULL);
+        multiply_element_threaded(data);
+        end_time(data, data->arow_size * data->bcol_size, "each element");
+        write_output("c.txt", data);
+    }
+    else if (argc == 4)
+    {
+        struct m_data* data = read_matrices(argv[1], argv[2]);
 /*        gettimeofday(&start, NULL);
         multiply_naive(data);
         end_time(data, 1, "whole matrix");*/
@@ -52,11 +69,7 @@ int main(int argc, char* argv[])
         gettimeofday(&start, NULL);
         multiply_element_threaded(data);
         end_time(data, data->arow_size * data->bcol_size, "each element");
-        write_output("c.txt", data);
-    }
-    else if (argc == 4)
-    {
-
+        write_output(argv[3], data);
     }
     else
     {
@@ -71,5 +84,6 @@ void end_time(struct m_data *data, unsigned int num, const char* type)
     printf("By using the threads to calculate %s:\n", type);
     printf(" -Number of threads used for this method is: %d\n", num);
     printf(" -Time taken in seconds is %lu\n", stop.tv_sec - start.tv_sec);
-    printf(" -Time taken in micro seconds is %lu\n", stop.tv_usec - start.tv_usec);
+    printf(" -Time taken in micro-seconds is %ld microseconds\n",
+           ((stop.tv_sec - start.tv_sec)*1000000L + stop.tv_usec) - start.tv_usec);
 }

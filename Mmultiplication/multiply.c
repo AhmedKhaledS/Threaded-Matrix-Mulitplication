@@ -29,7 +29,12 @@ void multiply_row_threaded(struct m_data *data)
         struct state *st = create_state(i, 0);
         int ret = pthread_create(&row_threads[i], NULL, calculate_row, (void *)st);
         if (ret != 0)
-            fprintf(stderr, "Error occured while creating thread, error code = %d\n", ret);
+        {
+            fprintf(stderr, "Error occured while creating thread, error code = %d Thread number: %d\n", ret, i);
+            return;
+        }
+        //printf("Thread number %d is created\n", i);
+
     }
     for (int i = 0; i < threads_number; i++)
     {
@@ -50,7 +55,11 @@ void multiply_element_threaded(struct m_data *data)
             struct state *st = create_state(i, j);
             int ret = pthread_create(&element_threads[counter++], NULL, calculate_element, (void *)st);
             if (ret != 0)
-                fprintf(stderr, "Error occured while creating thread, error code = %d\n", ret);
+            {
+                fprintf(stderr, "Error occured while creating thread, error code = %d Thread number: %d\n", ret, counter);
+                return;
+            }
+           // printf("Thread number %d is created\n", counter);
         }
     }
     for (int i = 0; i < threads_number; i++)
@@ -74,6 +83,7 @@ void *calculate_row(void *ptr)
         }
     }
     free(st);
+    //printf("Thread is finished\n");
     pthread_exit(NULL);
 }
 
@@ -87,5 +97,7 @@ void *calculate_element(void *ptr)
                                                  * mat_data->matrix_b[i][st->curr_col]);
     }
     free(st);
+    //printf("Thread is finished : %d\n", cnt);
+
     pthread_exit(NULL);
 }
