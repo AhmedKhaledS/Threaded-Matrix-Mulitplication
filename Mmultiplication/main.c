@@ -10,30 +10,6 @@ struct timeval stop, start;
 
 int main(int argc, char* argv[])
 {
-
-   /* FILE *x, *y;
-    x = fopen("a.txt", "w");
-    fprintf(x, "row=160 col=10000\n");
-    for (int i = 0; i < 160; i++)
-    {
-        for (int j = 0; j < 10000; j++)
-        {
-            fprintf(x, "%d ", i+j);
-        }
-        fprintf(x, "\n");
-    }
-    fclose(x);
-    y = fopen("b.txt", "w");
-    fprintf(y, "row=10000 col=200\n");
-    for (int i = 0; i < 10000; i++)
-    {
-        for (int j = 0; j < 200; j++)
-        {
-            fprintf(y, "%d ", j==i);
-        }
-        fprintf(y, "\n");
-    }
-    fclose(y);*/
     // No specific files contains matrices A and B.
     // So they are in a.txt b.txt by default.
     if (argc == 1)
