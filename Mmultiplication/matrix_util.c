@@ -1,4 +1,5 @@
 #include "matrix_util.h"
+#include "matrices_data.h"
 
 struct m_data* create_mdata(unsigned int row1, unsigned int col1,
             unsigned int row2, unsigned int col2)

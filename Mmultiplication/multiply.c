@@ -1,5 +1,6 @@
 #include "multiply.h"
 
+
 struct m_data *mat_data;
 
 void multiply_naive(struct m_data *data)

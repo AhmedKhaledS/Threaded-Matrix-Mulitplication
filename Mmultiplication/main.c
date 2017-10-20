@@ -11,7 +11,7 @@ struct timeval stop, start;
 int main(int argc, char* argv[])
 {
 
-/*    FILE *x, *y;
+   /* FILE *x, *y;
     x = fopen("a.txt", "w");
     fprintf(x, "row=160 col=10000\n");
     for (int i = 0; i < 160; i++)
@@ -29,7 +29,7 @@ int main(int argc, char* argv[])
     {
         for (int j = 0; j < 200; j++)
         {
-            fprintf(y, "%d ", j+i);
+            fprintf(y, "%d ", j==i);
         }
         fprintf(y, "\n");
     }
@@ -39,11 +39,11 @@ int main(int argc, char* argv[])
     if (argc == 1)
     {
         struct m_data* data = read_matrices("a.txt", "b.txt");
-        gettimeofday(&start, NULL);
+/*        gettimeofday(&start, NULL);
         multiply_naive(data);
-        end_time(data, 1, "whole matrix");
+        end_time(data, 1, "whole matrix");*/
 
-        //---------------------------------------------------------
+        //-------------------------------------------------------------------------------------------------
         gettimeofday(&start, NULL);
         multiply_row_threaded(data);
         gettimeofday(&stop, NULL);
@@ -52,7 +52,10 @@ int main(int argc, char* argv[])
         gettimeofday(&start, NULL);
         multiply_element_threaded(data);
         end_time(data, data->arow_size * data->bcol_size, "each element");
+
         write_output("c.txt", data);
+        free(data);
+
     }
     else if (argc == 4)
     {
@@ -61,7 +64,7 @@ int main(int argc, char* argv[])
         multiply_naive(data);
         end_time(data, 1, "whole matrix");*/
 
-        //---------------------------------------------------------
+        //-------------------------------------------------------------------------------------------------
         gettimeofday(&start, NULL);
         multiply_row_threaded(data);
         end_time(data, data->arow_size * data->bcol_size, "each row");
@@ -70,6 +73,7 @@ int main(int argc, char* argv[])
         multiply_element_threaded(data);
         end_time(data, data->arow_size * data->bcol_size, "each element");
         write_output(argv[3], data);
+        free(data);
     }
     else
     {
