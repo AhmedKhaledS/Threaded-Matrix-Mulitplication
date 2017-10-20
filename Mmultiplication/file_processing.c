@@ -156,4 +156,19 @@ void read_mat2_size(FILE *input_b, char r2_value[], char c2_value[])
 void write_output(char *m_file_name, struct m_data *datum)
 {
     FILE *output;
+    output = fopen(m_file_name, "w");
+    if (output == NULL)
+    {
+        fprintf(stderr, "Error while writting to the output file\n");
+        return;
+    }
+    for (int i = 0; i < datum->arow_size; i++)
+    {
+        for (int j = 0; j < datum->bcol_size; j++)
+        {
+            fprintf(output, "%lld ", *(*(datum->matrix_o + i)+j));
+        }
+        fprintf(output, "\n");
+    }
+    fclose(output);
 }

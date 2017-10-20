@@ -3,51 +3,56 @@
 #include <unistd.h>
 #include "matrices_data.h"
 #include "file_processing.h"
-#include "matrix_util.h"
+#include <sys/time.h>
 #include "multiply.h"
 
-
+void end_time(struct m_data *data, unsigned int num, const char* type);
+struct timeval stop, start;
 
 int main(int argc, char* argv[])
 {
+
+/*    FILE *x, *y;
+    x = fopen("a.txt", "w");
+    fprintf(x, "row=1000 col=100\n");
+    for (int i = 0; i < 1000; i++)
+    {
+        for (int j = 0; j < 100; j++)
+        {
+            fprintf(x, "%d ", i+j);
+        }
+        fprintf(x, "\n");
+    }
+    fclose(x);
+    y = fopen("b.txt", "w");
+    fprintf(y, "row=100 col=100\n");
+    for (int i = 0; i < 100; i++)
+    {
+        for (int j = 0; j < 100; j++)
+        {
+            fprintf(y, "%d ", i==j ? 1 : 0);
+        }
+        fprintf(y, "\n");
+    }
+    fclose(y);*/
     // No specific files contains matrices A and B.
     // So they are in a.txt b.txt by default.
     if (argc == 1)
     {
-        //puts(buff);
         struct m_data* data = read_matrices("a.txt", "b.txt");
-        //struct m_data *x = create_mdata(3, 3, 3, 3);
+/*        gettimeofday(&start, NULL);
         multiply_naive(data);
-        for (int i = 0; i < data->arow_size; i++)
-        {
-            for (int j = 0; j <  data->bcol_size; j++)
-                printf("%d ", *(*(data->matrix_o+i)+j));
-            printf("\n");
-        }
+        end_time(data, 1, "whole matrix");*/
+
+        //---------------------------------------------------------
+        gettimeofday(&start, NULL);
         multiply_row_threaded(data);
-        for (int i = 0; i < data->arow_size; i++)
-        {
-            for (int j = 0; j <  data->bcol_size; j++)
-                printf("%d ", *(*(data->matrix_o+i)+j));
-            printf("\n");
-        }
+        end_time(data, data->arow_size * data->bcol_size, "each row");
+        //--------------------------------------------------------------------------------------------------
+        gettimeofday(&start, NULL);
         multiply_element_threaded(data);
-        for (int i = 0; i < data->arow_size; i++)
-        {
-            for (int j = 0; j <  data->bcol_size; j++)
-                printf("%d ", *(*(data->matrix_o+i)+j));
-            printf("\n");
-        }
-/*        for (int i = 0; i < 3; i++)
-        {
-            for (int j = 0; j <  3; j++)
-                printf("%d ", *(*(x->matrix_o+i)+j));
-            printf("\n");
-        }*/
-        /*free(x->matrix_a);
-        free(x->matrix_b);
-        free(x->matrix_o);
-        free(x);*/
+        end_time(data, data->arow_size * data->bcol_size, "each element");
+        write_output("c.txt", data);
     }
     else if (argc == 4)
     {
@@ -58,4 +63,13 @@ int main(int argc, char* argv[])
         fprintf(stderr, "Invalid arguments are passed!\n");
     }
     return 0;
+}
+
+void end_time(struct m_data *data, unsigned int num, const char* type)
+{
+    gettimeofday(&stop, NULL);
+    printf("By using the threads to calculate %s:\n", type);
+    printf(" -Number of threads used for this method is: %d\n", num);
+    printf(" -Time taken in seconds is %lu\n", stop.tv_sec - start.tv_sec);
+    printf(" -Time taken in micro seconds is %lu\n", stop.tv_usec - start.tv_usec);
 }

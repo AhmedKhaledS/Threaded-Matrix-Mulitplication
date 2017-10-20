@@ -40,8 +40,8 @@ void multiply_row_threaded(struct m_data *data)
 void multiply_element_threaded(struct m_data *data)
 {
     mat_data = data;
-    unsigned int threads_number = data->arow_size;
-    pthread_t element_threads[threads_number * threads_number];
+    unsigned int threads_number = data->arow_size * data->bcol_size;
+    pthread_t element_threads[threads_number];
     unsigned int counter = 0;
     for (int i = 0; i < data->arow_size; i++)
     {
@@ -53,7 +53,7 @@ void multiply_element_threaded(struct m_data *data)
                 fprintf(stderr, "Error occured while creating thread, error code = %d\n", ret);
         }
     }
-    for (int i = 0; i < threads_number * threads_number; i++)
+    for (int i = 0; i < threads_number; i++)
     {
         pthread_join(element_threads[i], NULL);
     }
