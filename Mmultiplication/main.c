@@ -10,6 +10,29 @@ struct timeval stop, start;
 
 int main(int argc, char* argv[])
 {
+/*    FILE *x, *y;
+    x = fopen("a.txt", "w");
+    fprintf(x, "row=100 col=100000\n");
+    for (int i = 0; i < 100; i++)
+     {
+        for (int j = 0; j < 100000; j++)
+         {
+             fprintf(x, "%d ", i+j);
+         }
+         fprintf(x, "\n");
+     }
+    fclose(x);
+    y = fopen("b.txt", "w");
+    fprintf(y, "row=100000 col=100\n");
+    for (int i = 0; i < 100000; i++)
+     {
+        for (int j = 0; j < 100; j++)
+         {
+            fprintf(y, "%d ", i==j);
+         }
+         fprintf(y, "\n");
+     }
+    fclose(y);*/
     // No specific files contains matrices A and B.
     // So they are in a.txt b.txt by default.
     if (argc == 1)
@@ -18,6 +41,9 @@ int main(int argc, char* argv[])
 /*        gettimeofday(&start, NULL);
         multiply_naive(data);
         end_time(data, 1, "whole matrix");*/
+        printf("First matrix is of size: %dx%d\n", data->arow_size, data->acol_size);
+        printf("Second matrix is of size: %dx%d\n", data->brow_size, data->bcol_size);
+        printf("Output matrix is of size: %dx%d\n\n", data->arow_size, data->bcol_size);
 
         //-------------------------------------------------------------------------------------------------
         gettimeofday(&start, NULL);
@@ -25,6 +51,7 @@ int main(int argc, char* argv[])
         gettimeofday(&stop, NULL);
         end_time(data, data->arow_size, "each row");
         //--------------------------------------------------------------------------------------------------
+        printf("--------------------------------------------------------------------------------------------\n");
         gettimeofday(&start, NULL);
         multiply_element_threaded(data);
         end_time(data, data->arow_size * data->bcol_size, "each element");
